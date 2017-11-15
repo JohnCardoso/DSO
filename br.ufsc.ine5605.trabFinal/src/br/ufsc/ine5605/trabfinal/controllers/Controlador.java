@@ -1,6 +1,6 @@
 package br.ufsc.ine5605.trabfinal.controllers;
 
-public class Controlador {
+public abstract class Controlador {
 	
 	// Constructor and initiator
 
