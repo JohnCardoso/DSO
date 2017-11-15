@@ -1,11 +1,14 @@
 package br.ufsc.ine5605.trabfinal.objects;
 
-public abstract class Pessoa {
-    protected String nome;
-    protected long cpf;
+import java.io.Serializable;
 
-    public Pessoa(String nome, long cpf) {
+public abstract class Pessoa implements Serializable {
+
+    private static final long serialVersionUID = 3493086819578079101L;
+
+    protected String nome;
+
+    public Pessoa(String nome) {
         this.nome = nome;
-        this.cpf = cpf;
     }
 }
