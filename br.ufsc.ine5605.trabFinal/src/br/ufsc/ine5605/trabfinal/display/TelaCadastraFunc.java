@@ -3,9 +3,12 @@ package br.ufsc.ine5605.trabfinal.display;
 import br.ufsc.ine5605.trabfinal.controllers.ControladorFuncionario;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class TelaCadastraFunc extends JFrame {
     private ControladorFuncionario ctrlFuncionario;
+    private GerenciadorBotoesCadastro gerBotCad;
     
     private JLabel lbNome;
     private JTextField tfNome;
@@ -20,11 +23,12 @@ public class TelaCadastraFunc extends JFrame {
     private JCheckBox cbInsalubridade;
     private JCheckBox cbPericulosidade;
     private JButton bCadastrarFuncionario;
+    private JButton bVoltar;
 
     public TelaCadastraFunc(ControladorFuncionario owner) {
         super("Cadastrar Funcionário");
-
         this.ctrlFuncionario = owner;
+        this.gerBotCad = new GerenciadorBotoesCadastro();
         init();
     }
     
@@ -40,6 +44,7 @@ public class TelaCadastraFunc extends JFrame {
         container.add(lbNome, constraints);
 
         tfNome = new JTextField();
+        tfNome.setHorizontalAlignment(JTextField.CENTER);
         constraints.gridx = 1;
         constraints.gridy = 0;
         tfNome.setPreferredSize(new Dimension(200, 25));
@@ -51,6 +56,7 @@ public class TelaCadastraFunc extends JFrame {
         container.add(lbMatri, constraints);
 
         tfMatri = new JTextField();
+        tfMatri.setHorizontalAlignment(JTextField.CENTER);
         constraints.gridx = 1;
         constraints.gridy = 1;
         tfMatri.setPreferredSize(new Dimension(200, 25));
@@ -62,6 +68,7 @@ public class TelaCadastraFunc extends JFrame {
         container.add(lbSalario, constraints);
 
         tfSalario = new JTextField();
+        tfSalario.setHorizontalAlignment(JTextField.CENTER);
         constraints.gridx = 1;
         constraints.gridy = 2;
         tfSalario.setPreferredSize(new Dimension(200, 25));
@@ -73,6 +80,7 @@ public class TelaCadastraFunc extends JFrame {
         container.add(lbDepentente, constraints);
 
         tfDependente = new JTextField();
+        tfDependente.setHorizontalAlignment(JTextField.CENTER);
         constraints.gridx = 1;
         constraints.gridy = 3;
         tfDependente.setPreferredSize(new Dimension(200, 25));
@@ -107,13 +115,45 @@ public class TelaCadastraFunc extends JFrame {
         bCadastrarFuncionario = new JButton("Cadastrar");
         constraints.gridx = 0;
         constraints.gridy = 8;
-        constraints.insets = new Insets(20, 0, 20, 0);
+        bCadastrarFuncionario.setPreferredSize(new Dimension(150, 25));
+        constraints.insets = new Insets(20, 0, 0, 0);
         container.add(bCadastrarFuncionario, constraints);
+        bCadastrarFuncionario.setActionCommand("registraFunc");
+        bCadastrarFuncionario.addActionListener(gerBotCad);
+        
+        bVoltar = new JButton("Voltar");
+        constraints.gridx = 0;
+        constraints.gridy = 9;
+        bVoltar.setPreferredSize(new Dimension(150, 25));
+        constraints.insets = new Insets(5, 0, 0, 0);
+        container.add(bVoltar, constraints);
+        bVoltar.setActionCommand("voltarTela");
+        bVoltar.addActionListener(gerBotCad);
         
         setSize(500, 500);        
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
 
+    }
+    
+    private class GerenciadorBotoesCadastro implements ActionListener {
+		
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if (e.getActionCommand().equals("voltarTela")) {               
+                dispose();
+            }
+            if (e.getActionCommand().equals("registraFunc")) {
+                 try {
+                    ctrlFuncionario.validandoDados(tfNome.getText(), tfMatri.getText(), 
+                            tfSalario.getText(), tfDependente.getText());
+                    JOptionPane.showMessageDialog(null, "Cadastrado com sucesso!");
+                } catch (IllegalArgumentException e1) {
+                    JOptionPane.showMessageDialog(null, e1.getMessage());                    
+                }
+            }
+        }
+    	
     }
 
 }

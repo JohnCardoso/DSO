@@ -14,7 +14,6 @@ public class TelaPrincipal extends JFrame {
     private JComboBox lista;
     private JButton bCalculo;
     private JButton bCadastro;
-    private String[] listaFuncionarios = { "Alan", "Jonathan", "Thiago", "MC Gorila" };    
 
     public TelaPrincipal(ControladorPrincipal owner) {
         super("Calculadora de Salário");
@@ -30,12 +29,11 @@ public class TelaPrincipal extends JFrame {
         container.setLayout(new GridBagLayout());
         GridBagConstraints constraints = new GridBagConstraints();
 
-        //lista = new JComboBox(listaFuncionarios);
-        //constraints.gridx = 0;
-        //constraints.gridy = 3;
-        //container.add(listaFuncionarios, constraints);
+        
 
         bCalculo = new JButton("Calcular Salário");
+        bCalculo.setActionCommand("ControladorSalario");
+        bCalculo.addActionListener(gerBotGeral);
         constraints.gridx = 0;
         constraints.gridy = 0;
         bCalculo.setPreferredSize(new Dimension(200, 25));
@@ -66,15 +64,9 @@ public class TelaPrincipal extends JFrame {
                 case "ControladorFuncionario":
                     ctrlPrinc.getCtrlFuncionario().inicia();
                     break;
-               /* case "ControladorVeiculo":
-                    ctrlPrinc.getCtrlVeiculo().inicia();
+               case "ControladorSalario":
+                    ctrlPrinc.getCtrlCalcular().inicia();
                     break;
-                case "ControladorEmprestimo":
-                    ctrlPrinc.getCtrlEmprestimo().inicia();
-                    break;
-                case "ControladorLog":
-                    ctrlPrinc.getCtrlLog().inicia();
-                    break; */
                 default:
                     break; 
             }
