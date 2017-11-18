@@ -9,18 +9,42 @@ public class Funcionario extends Pessoa implements Serializable {
     private String matricula;
     private String salario;
     private String dependente;
-   // private boolean vt;
-    //private boolean insalubridade;
-    //private boolean periculosidade;
+    private boolean vt;
+    private boolean insalubridade;
+    private boolean periculosidade;
 
-    public Funcionario(String nome, String matricula, String salario, String dependente) {
+    public Funcionario(String nome, String matricula, String salario, String dependente, boolean vt, boolean insalubridade, boolean periculosidade) {
         super(nome);
         this.matricula = matricula;
         this.salario = salario;
         this.dependente = dependente;
-        //this.vt = vt;
-        //this.insalubridade = insalubridade;
-        //this.periculosidade = periculosidade;
+        this.vt = vt;
+        this.insalubridade = insalubridade;
+        this.periculosidade = periculosidade;
+    }
+
+    public boolean isVt() {
+        return vt;
+    }
+
+    public void setVt(boolean vt) {
+        this.vt = vt;
+    }
+
+    public boolean isInsalubridade() {
+        return insalubridade;
+    }
+
+    public void setInsalubridade(boolean insalubridade) {
+        this.insalubridade = insalubridade;
+    }
+
+    public boolean isPericulosidade() {
+        return periculosidade;
+    }
+
+    public void setPericulosidade(boolean periculosidade) {
+        this.periculosidade = periculosidade;
     }
 
     public String getMatricula() {
