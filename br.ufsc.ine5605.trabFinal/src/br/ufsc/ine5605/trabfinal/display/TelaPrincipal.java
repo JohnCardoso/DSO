@@ -10,10 +10,10 @@ import java.util.ArrayList;
 public class TelaPrincipal extends JFrame {
     private ControladorPrincipal ctrlPrinc;
     private GerenciadorBotoesGeral gerBotGeral;
-
-    private JComboBox lista;
+    
     private JButton bCalculo;
     private JButton bCadastro;
+    private JButton bExibeFunc;
 
     public TelaPrincipal(ControladorPrincipal owner) {
         super("Calculadora de Salário");
@@ -49,6 +49,15 @@ public class TelaPrincipal extends JFrame {
         bCadastro.setPreferredSize(new Dimension(200, 25));
         container.add(bCadastro, constraints);
         
+        
+        bExibeFunc = new JButton("Listar Funcionários");
+        bExibeFunc.setActionCommand("ExibirFuncionario");
+        bExibeFunc.addActionListener(gerBotGeral);
+        constraints.gridx = 0;
+        constraints.gridy = 2;
+        bExibeFunc.setPreferredSize(new Dimension(200, 25));
+        container.add(bExibeFunc, constraints);
+        
         setSize(400, 200);        
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
@@ -66,6 +75,9 @@ public class TelaPrincipal extends JFrame {
                     break;
                case "ControladorSalario":
                     ctrlPrinc.getCtrlCalcular().inicia();
+                    break;
+                 case "ExibirFuncionario":
+                    ctrlPrinc.getCtrlFuncionario().telaListarFunc();
                     break;
                 default:
                     break; 

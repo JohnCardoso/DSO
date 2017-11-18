@@ -5,10 +5,13 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 
 public class TelaCadastraFunc extends JFrame {
     private ControladorFuncionario ctrlFuncionario;
     private GerenciadorBotoesCadastro gerBotCad;
+    private GerenciadorCheckboxCadastro gerCheckCad;
     
     private JLabel lbNome;
     private JTextField tfNome;
@@ -29,6 +32,7 @@ public class TelaCadastraFunc extends JFrame {
         super("Cadastrar Funcionário");
         this.ctrlFuncionario = owner;
         this.gerBotCad = new GerenciadorBotoesCadastro();
+        this.gerCheckCad = new GerenciadorCheckboxCadastro();
         init();
     }
     
@@ -99,18 +103,21 @@ public class TelaCadastraFunc extends JFrame {
         cbVT.setPreferredSize(new Dimension(300, 25));
         constraints.insets = new Insets(0, 0, 0, 0);
         container.add(cbVT, constraints);
+        cbVT.addItemListener(gerCheckCad);
 
         cbInsalubridade = new JCheckBox(" Insalubridade");
         constraints.gridx = 0;
         constraints.gridy = 6;
         cbInsalubridade.setPreferredSize(new Dimension(300, 25));
         container.add(cbInsalubridade, constraints);
+        cbInsalubridade.addItemListener(gerCheckCad);
 
         cbPericulosidade = new JCheckBox(" Periculosidade");
         constraints.gridx = 0;
         constraints.gridy = 7;
         cbPericulosidade.setPreferredSize(new Dimension(300, 25));
         container.add(cbPericulosidade, constraints);
+        cbPericulosidade.addItemListener(gerCheckCad);
 
         bCadastrarFuncionario = new JButton("Cadastrar");
         constraints.gridx = 0;
@@ -146,14 +153,31 @@ public class TelaCadastraFunc extends JFrame {
             if (e.getActionCommand().equals("registraFunc")) {
                  try {
                     ctrlFuncionario.validandoDados(tfNome.getText(), tfMatri.getText(), 
-                            tfSalario.getText(), tfDependente.getText());
-                    JOptionPane.showMessageDialog(null, "Cadastrado com sucesso!");
+                            tfSalario.getText(), tfDependente.getText(), cbVT.isSelected(), cbInsalubridade.isSelected(), cbPericulosidade.isSelected());
+                    JOptionPane.showMessageDialog(null, "Registro realizado com sucesso");
                 } catch (IllegalArgumentException e1) {
                     JOptionPane.showMessageDialog(null, e1.getMessage());                    
                 }
             }
         }
     	
+    }
+    
+    private class GerenciadorCheckboxCadastro implements ItemListener {
+
+        @Override
+        public void itemStateChanged(ItemEvent e) {
+            if(cbVT.isSelected()) {
+                ctrlFuncionario.validandoVT(true);
+            }
+            if(cbInsalubridade.isSelected()) {
+                ctrlFuncionario.validandoInsalubridade(true);
+            }
+            if(cbPericulosidade.isSelected()) {
+                ctrlFuncionario.validandoPericulosidade(true);
+            }
+        }
+        
     }
 
 }
