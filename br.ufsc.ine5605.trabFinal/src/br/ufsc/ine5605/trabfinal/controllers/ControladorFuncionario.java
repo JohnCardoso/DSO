@@ -2,11 +2,13 @@ package br.ufsc.ine5605.trabfinal.controllers;
 
 import br.ufsc.ine5605.trabfinal.display.TelaCadastraFunc;
 import br.ufsc.ine5605.trabfinal.display.TelaListarFunc;
+import br.ufsc.ine5605.trabfinal.interfaces.ICrud;
 import br.ufsc.ine5605.trabfinal.objects.Funcionario;
 import br.ufsc.ine5605.trabfinal.persistence.FuncDAO;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
-public class ControladorFuncionario extends Controlador {
+public class ControladorFuncionario extends Controlador implements ICrud {
     private TelaCadastraFunc telaCadFunc;
     private TelaListarFunc telaListarFunc;
     private static ControladorFuncionario ctrlFuncionario;
@@ -63,30 +65,7 @@ public class ControladorFuncionario extends Controlador {
             veriPrc = 0;
         }
         return veriPrc;
-    }
-    
-    //Métodos validadores
-    
-    public boolean validarMatricula (String numeroMat) {
-       boolean validMat = false;
-       if(numeroMat.matches("\\d{6}") && !numeroMat.equals("000000")) {
-           validMat = true;
-       }
-       return validMat;
-    }
-    
-    public boolean validarNome (String nm) {
-        boolean validNm = false;
-        
-        if (nm.length() >= 3) {
-            for (int i = 0; i <nm.length(); i++) {
-                if(Character.isAlphabetic(nm.charAt(i)) || Character.isWhitespace(nm.charAt(i))) {
-                    validNm = true;
-                }                
-            }
-        }        
-        return validNm;
-    }
+    }    
     
     public ArrayList<Funcionario> listarFuncionarios() {
         return new ArrayList<Funcionario>(FuncDAO.getFDAO().getList());
@@ -108,22 +87,40 @@ public class ControladorFuncionario extends Controlador {
 
     }
 
-    private void cadastrar(Object funcionario) throws IllegalArgumentException {
+    @Override
+    public void cadastrar(Object funcionario) throws IllegalArgumentException {
         Funcionario func = (Funcionario) funcionario;
-        if (!func.getNome().equals("") && !func.getMatricula().equals("") && func != null) {
-            if (!FuncDAO.getFDAO().getList().isEmpty()) {
-                if (!validaFuncionarioExiste(func.getMatricula())) {
-                    FuncDAO.getFDAO().insert(func);
-                    telaListarFunc.atualDados();
+        double verSal = Double.parseDouble(func.getSalario());
+        if (func.getNome().matches("[a-z]{3,}")) {
+            if (func.getMatricula().matches("[0-9]{6,6}") && func != null) {
+                if (func.getSalario().matches("^\\d+(\\.\\d\\d)*$")) {
+                    if(verSal >= 937) {
+                        if(func.getDependente().matches("[0-9]{1,}")) {
+                            if (!FuncDAO.getFDAO().getList().isEmpty()) {
+                                if (!validaFuncionarioExiste(func.getMatricula())) {
+                                    FuncDAO.getFDAO().insert(func);
+                                    telaListarFunc.atualDados();
+                                } else {
+                                    throw new IllegalArgumentException("Funcionario já cadastrado no sistema");
+                                }
+                            } else {
+                                FuncDAO.getFDAO().insert(func);
+                                telaListarFunc.atualDados();
+                            }
+                        } else {
+                            throw new IllegalArgumentException("Verifique o preenchimento Nº de dependentes inválido");
+                        }
+                    } else {
+                         throw new IllegalArgumentException("Salário inferior ao mínimo previsto: R$ 937,00");
+                    }
                 } else {
-                    throw new IllegalArgumentException("Funcionario existente");
-                }
+                    throw new IllegalArgumentException("Verifique o preenchimento Salário inválido \nSomente dígitos e duas casas decimais após a vírgula");
+                } 
             } else {
-                FuncDAO.getFDAO().insert(func);
-                telaListarFunc.atualDados();
+                throw new IllegalArgumentException("Verifique o preenchimento Matrícula inválida \n6 caracteres exigido! Somente dígitos");
             }
         } else {
-            throw new IllegalArgumentException("Verifique o preenchimento");
+            throw new IllegalArgumentException("Verifique o preenchimento Nome inválido");
         }
     }
     
