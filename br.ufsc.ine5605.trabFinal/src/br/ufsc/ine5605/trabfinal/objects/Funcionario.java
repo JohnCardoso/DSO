@@ -4,8 +4,8 @@ import java.io.Serializable;
 
 public class Funcionario extends Pessoa implements Serializable {
 
-    private static final long serialVersionUID = 5881105998438722668L;
-    
+    private static final long serialVersionUID = 7706429832827275482L;
+
     private String matricula;
     private String salario;
     private String dependente;

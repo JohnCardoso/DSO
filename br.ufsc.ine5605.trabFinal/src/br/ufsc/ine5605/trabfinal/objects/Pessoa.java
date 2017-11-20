@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public abstract class Pessoa implements Serializable {
 
-    private static final long serialVersionUID = 3493086819578079101L;
+    private static final long serialVersionUID = -6433727475752841619L;
 
     protected String nome;
 
