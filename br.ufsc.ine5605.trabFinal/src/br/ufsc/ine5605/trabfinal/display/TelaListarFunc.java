@@ -13,7 +13,7 @@ public class TelaListarFunc extends JFrame {
     
     private ControladorFuncionario ctrlFunc;
     
-    private String[] mostraColunas = { "Nome", "Matrícula", "Salário Bruto", "Nº Dependentes", "V.T.", "Insalubridade", "Periculosidade" };
+    private String[] mostraColunas = { "Matrícula", "Nome", "Salário Bruto", "Nº Dependentes", "V.T.", "Insalubridade", "Periculosidade" };
     private JTable mostraFuncionarios;
     private DefaultTableModel tabelaMF;
     

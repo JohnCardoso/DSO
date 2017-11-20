@@ -1,27 +1,30 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package br.ufsc.ine5605.trabfinal.display;
+/* package br.ufsc.ine5605.trabfinal.display;
 
 import javax.swing.*;
 import java.awt.*;
 import br.ufsc.ine5605.trabfinal.controllers.ControladorCalculaSalario;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class TelaCalculaSalario extends JFrame {
-    private JLabel lbMatricula;
-    private JTextField jtMatricula;
-    private JLabel lbFaltas;
-    private JTextField jtFaltas;
-    private JLabel lbHorasExtras;
-    private JTextField jtHorasExtras;
-    private JButton bCalcular;
     private ControladorCalculaSalario ctrlCalcular;
+    private GerenciadorBotoesCalculo gerBotCalc;    
+
+    private JLabel lbMatricula;
+    private JTextField tfMatricula;
+    private JLabel lbFaltas;
+    private JTextField tfFaltas;
+    private JLabel lbHorasExtras;
+    private JTextField tfHorasExtras;
+    private JButton bCalcular;
+
 
     public TelaCalculaSalario(ControladorCalculaSalario owner) {
         super("Informações");
         this.ctrlCalcular = owner;
+        this.gerBotCalc = new GerenciadorBotoesCalculo();
 
         init();
     }
@@ -37,36 +40,36 @@ public class TelaCalculaSalario extends JFrame {
         constraints.insets = new Insets(0, 5, 0, 0);
         container.add(lbMatricula, constraints);
 
-        jtMatricula = new JTextField();
-        jtMatricula.setHorizontalAlignment(JTextField.CENTER);
+        tfMatricula = new JTextField();
+        tfMatricula.setHorizontalAlignment(JTextField.CENTER);
         constraints.gridx = 1;
         constraints.gridy = 0;
-        jtMatricula.setPreferredSize(new Dimension(60, 25));
-        container.add(jtMatricula, constraints);
+        tfMatricula.setPreferredSize(new Dimension(60, 25));
+        container.add(tfMatricula, constraints);
 
         lbFaltas = new JLabel("Quantidade de Faltas");
         constraints.gridx = 0;
         constraints.gridy = 1;
         container.add(lbFaltas, constraints);
 
-        jtFaltas = new JTextField();
-        jtFaltas.setHorizontalAlignment(JTextField.CENTER);
+        tfFaltas = new JTextField();
+        tfFaltas.setHorizontalAlignment(JTextField.CENTER);
         constraints.gridx = 1;
         constraints.gridy = 1;
-        jtFaltas.setPreferredSize(new Dimension(60, 25));
-        container.add(jtFaltas, constraints);
+        tfFaltas.setPreferredSize(new Dimension(60, 25));
+        container.add(tfFaltas, constraints);
 
         lbHorasExtras = new JLabel("Quantidade de Horas Extras");
         constraints.gridx = 0;
         constraints.gridy = 2;
         container.add(lbHorasExtras, constraints);
 
-        jtHorasExtras = new JTextField();
-        jtHorasExtras.setHorizontalAlignment(JTextField.CENTER);
+        tfHorasExtras = new JTextField();
+        tfHorasExtras.setHorizontalAlignment(JTextField.CENTER);
         constraints.gridx = 1;
         constraints.gridy = 2;
-        jtHorasExtras.setPreferredSize(new Dimension(60, 25));
-        container.add(jtHorasExtras, constraints);
+        tfHorasExtras.setPreferredSize(new Dimension(60, 25));
+        container.add(tfHorasExtras, constraints);
         
 
         bCalcular = new JButton("Calcular");
@@ -76,11 +79,31 @@ public class TelaCalculaSalario extends JFrame {
         bCalcular.setPreferredSize(new Dimension(100, 25));
         constraints.insets = new Insets(60, 0, 0, 0);
         container.add(bCalcular, constraints);
+        bCalcular.setActionCommand("calculando");
+        bCalcular.addActionListener(gerBotCalc);
 
         setSize(400, 300);        
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
         
     }
+    
+    private class GerenciadorBotoesCalculo implements ActionListener {
 
-}
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if (e.getActionCommand().equals("calculando")) {
+                 try {
+                    ctrlCalcular.recuperaSalario(tfMatricula.getText(), tfFaltas.getText(), 
+                            tfHorasExtras.getText().replace(",","."));
+                    JOptionPane.showMessageDialog(null, "Calculando");                   
+                } catch (NullPointerException | IllegalArgumentException ex) {
+                    JOptionPane.showMessageDialog(null, ex.getMessage());
+                } catch (Exception ex) {
+                    Logger.getLogger(TelaCalculaSalario.class.getName()).log(Level.SEVERE, null, ex.getMessage());
+                }      
+            }
+        }
+    }
+
+} */

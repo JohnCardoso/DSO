@@ -153,8 +153,9 @@ public class TelaCadastraFunc extends JFrame {
             if (e.getActionCommand().equals("registraFunc")) {
                  try {
                     ctrlFuncionario.validandoDados(tfNome.getText(), tfMatri.getText(), 
-                            tfSalario.getText(), tfDependente.getText(), cbVT.isSelected(), cbInsalubridade.isSelected(), cbPericulosidade.isSelected());
+                            tfSalario.getText().replace(",", "."), tfDependente.getText(), cbVT.isSelected(), cbInsalubridade.isSelected(), cbPericulosidade.isSelected());
                     JOptionPane.showMessageDialog(null, "Registro realizado com sucesso");
+                   
                 } catch (IllegalArgumentException e1) {
                     JOptionPane.showMessageDialog(null, e1.getMessage());                    
                 }
