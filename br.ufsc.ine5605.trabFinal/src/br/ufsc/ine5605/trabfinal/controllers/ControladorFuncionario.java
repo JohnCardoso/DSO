@@ -5,7 +5,6 @@ import br.ufsc.ine5605.trabfinal.display.TelaListarFunc;
 import br.ufsc.ine5605.trabfinal.interfaces.ICrud;
 import br.ufsc.ine5605.trabfinal.objects.Funcionario;
 import br.ufsc.ine5605.trabfinal.persistence.FuncDAO;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 
 public class ControladorFuncionario extends Controlador implements ICrud {
@@ -91,7 +90,7 @@ public class ControladorFuncionario extends Controlador implements ICrud {
     public void cadastrar(Object funcionario) throws IllegalArgumentException {
         Funcionario func = (Funcionario) funcionario;
         double verSal = Double.parseDouble(func.getSalario());
-        if (func.getNome().matches("[a-z]{3,}")) {
+        if (func.getNome().matches("[\\w+\\sà-ùÀ-Ù]{3,}")) {
             if (func.getMatricula().matches("[0-9]{6,6}") && func != null) {
                 if (func.getSalario().matches("^\\d+(\\.\\d\\d)*$")) {
                     if(verSal >= 937) {
@@ -108,7 +107,7 @@ public class ControladorFuncionario extends Controlador implements ICrud {
                                 telaListarFunc.atualDados();
                             }
                         } else {
-                            throw new IllegalArgumentException("Verifique o preenchimento Nº de dependentes inválido");
+                            throw new IllegalArgumentException(" Nº de dependentes inválido,\ncaso não possua dependente coloque 0");
                         }
                     } else {
                          throw new IllegalArgumentException("Salário inferior ao mínimo previsto: R$ 937,00");
@@ -120,9 +119,37 @@ public class ControladorFuncionario extends Controlador implements ICrud {
                 throw new IllegalArgumentException("Verifique o preenchimento Matrícula inválida \n6 caracteres exigido! Somente dígitos");
             }
         } else {
-            throw new IllegalArgumentException("Verifique o preenchimento Nome inválido");
+            throw new IllegalArgumentException("Verifique o preenchimento Nome inválido");      
         }
     }
+    
+   /* public Funcionario buscarPelaMatricula(String numeroMatricula) {
+        if (validaFuncionarioExiste(numeroMatricula)) {
+            for (Funcionario f : FuncDAO.getFDAO().getList()) {
+                if (f.getMatricula().equals(numeroMatricula)) {
+                    return f;
+                }
+            }
+        }
+        return null;
+    }
+    
+    public double recuperaSalario(String numeroMatricula, String faltas, String horasExtras) throws Exception {
+        double valSalario;
+        Funcionario func = buscarPelaMatricula(numeroMatricula);
+        if (func != null) {
+            if (!FuncDAO.getFDAO().getList().isEmpty()) {
+               // func.getSalario();
+                valSalario = Double.parseDouble(func.getSalario());
+            } else {
+                throw new NullPointerException("Não existem Funcionários cadastrados.");
+            }
+        } else {
+            throw new IllegalArgumentException ("Funcionário inexistente, digite outra matrícula.");
+        }
+        return valSalario;
+    } */
+    
     
     public void telaListarFunc() {
         telaListarFunc.setVisible(true);
