@@ -1,14 +1,16 @@
-/* package br.ufsc.ine5605.trabfinal.display;
+ package br.ufsc.ine5605.trabfinal.display;
 
 import javax.swing.*;
 import java.awt.*;
 import br.ufsc.ine5605.trabfinal.controllers.ControladorCalculaSalario;
+import br.ufsc.ine5605.trabfinal.controllers.ControladorFuncionario;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class TelaCalculaSalario extends JFrame {
+    private ControladorFuncionario ctrlFuncionario;
     private ControladorCalculaSalario ctrlCalcular;
     private GerenciadorBotoesCalculo gerBotCalc;    
 
@@ -21,9 +23,9 @@ public class TelaCalculaSalario extends JFrame {
     private JButton bCalcular;
 
 
-    public TelaCalculaSalario(ControladorCalculaSalario owner) {
+    public TelaCalculaSalario(ControladorFuncionario owner) {
         super("Informações");
-        this.ctrlCalcular = owner;
+        this.ctrlFuncionario = owner;
         this.gerBotCalc = new GerenciadorBotoesCalculo();
 
         init();
@@ -94,9 +96,10 @@ public class TelaCalculaSalario extends JFrame {
         public void actionPerformed(ActionEvent e) {
             if (e.getActionCommand().equals("calculando")) {
                  try {
-                    ctrlCalcular.recuperaSalario(tfMatricula.getText(), tfFaltas.getText(), 
+                    ctrlFuncionario.recuperaDados(tfMatricula.getText(), tfFaltas.getText(), 
                             tfHorasExtras.getText().replace(",","."));
-                    JOptionPane.showMessageDialog(null, "Calculando");                   
+                    JOptionPane.showMessageDialog(null, "PASSOU CARALHO");
+                  //  ctrlPrinc.getCtrlExibe().inicia();
                 } catch (NullPointerException | IllegalArgumentException ex) {
                     JOptionPane.showMessageDialog(null, ex.getMessage());
                 } catch (Exception ex) {
@@ -104,6 +107,6 @@ public class TelaCalculaSalario extends JFrame {
                 }      
             }
         }
-    }
+    } 
 
-} */
+} 

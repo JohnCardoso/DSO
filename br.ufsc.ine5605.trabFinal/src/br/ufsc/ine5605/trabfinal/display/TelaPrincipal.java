@@ -74,7 +74,7 @@ public class TelaPrincipal extends JFrame {
                     ctrlPrinc.getCtrlFuncionario().inicia();
                     break;
                case "ControladorSalario":
-                    ctrlPrinc.getCtrlCalcular().inicia();
+                    ctrlPrinc.getCtrlFuncionario().telaCalcSal();
                     break;
                  case "ExibirFuncionario":
                     ctrlPrinc.getCtrlFuncionario().telaListarFunc();
