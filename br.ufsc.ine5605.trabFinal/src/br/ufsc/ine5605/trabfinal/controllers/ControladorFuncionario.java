@@ -1,6 +1,7 @@
 package br.ufsc.ine5605.trabfinal.controllers;
 
 import br.ufsc.ine5605.trabfinal.display.TelaCadastraFunc;
+import br.ufsc.ine5605.trabfinal.display.TelaCalculaSalario;
 import br.ufsc.ine5605.trabfinal.display.TelaListarFunc;
 import br.ufsc.ine5605.trabfinal.interfaces.ICrud;
 import br.ufsc.ine5605.trabfinal.objects.Funcionario;
@@ -10,13 +11,14 @@ import java.util.ArrayList;
 public class ControladorFuncionario extends Controlador implements ICrud {
     private TelaCadastraFunc telaCadFunc;
     private TelaListarFunc telaListarFunc;
+    private TelaCalculaSalario telaCalcSal;
     private static ControladorFuncionario ctrlFuncionario;
     
     public ControladorFuncionario() {
         super();
         telaCadFunc = new TelaCadastraFunc(this);
         telaListarFunc = new TelaListarFunc(this);
-		
+	telaCalcSal = new TelaCalculaSalario(this);
     }
 
     @Override
@@ -42,7 +44,7 @@ public class ControladorFuncionario extends Controlador implements ICrud {
         cadastrar(func);
     }
     
-    public int validandoVT (boolean vt) {
+   /* public int validandoVT (boolean vt) {
         int veriVt = 1;
         if (vt == false) {
             veriVt = 0;
@@ -64,7 +66,7 @@ public class ControladorFuncionario extends Controlador implements ICrud {
             veriPrc = 0;
         }
         return veriPrc;
-    }    
+    }    */
     
     public ArrayList<Funcionario> listarFuncionarios() {
         return new ArrayList<Funcionario>(FuncDAO.getFDAO().getList());
@@ -123,7 +125,7 @@ public class ControladorFuncionario extends Controlador implements ICrud {
         }
     }
     
-   /* public Funcionario buscarPelaMatricula(String numeroMatricula) {
+    public Funcionario buscarPelaMatricula(String numeroMatricula) {
         if (validaFuncionarioExiste(numeroMatricula)) {
             for (Funcionario f : FuncDAO.getFDAO().getList()) {
                 if (f.getMatricula().equals(numeroMatricula)) {
@@ -134,24 +136,35 @@ public class ControladorFuncionario extends Controlador implements ICrud {
         return null;
     }
     
-    public double recuperaSalario(String numeroMatricula, String faltas, String horasExtras) throws Exception {
-        double valSalario;
+    public void recuperaDados(String numeroMatricula, String faltas, String horasExtras) throws Exception {
         Funcionario func = buscarPelaMatricula(numeroMatricula);
         if (func != null) {
-            if (!FuncDAO.getFDAO().getList().isEmpty()) {
-               // func.getSalario();
-                valSalario = Double.parseDouble(func.getSalario());
+            if(faltas.matches("[0-9]")) {
+               if (horasExtras.matches("^\\d+(\\.\\d*)*$")) {
+                    if (!FuncDAO.getFDAO().getList().isEmpty()) {
+                        func.getSalario();
+                        func.isVt();
+                        func.isInsalubridade();
+                        func.isPericulosidade();
+                    } else {
+                    throw new NullPointerException("Não existem Funcionários cadastrados.");
+                    }
+               } else {
+                   throw new IllegalArgumentException("Valor de Horas Extras inválidas,\nsomente dígitos, ponto ou vírgula");
+               }
             } else {
-                throw new NullPointerException("Não existem Funcionários cadastrados.");
+                throw new IllegalArgumentException ("Número de faltas inválidas Somente dígitos");
             }
         } else {
             throw new IllegalArgumentException ("Funcionário inexistente, digite outra matrícula.");
         }
-        return valSalario;
-    } */
-    
+    }
     
     public void telaListarFunc() {
         telaListarFunc.setVisible(true);
+    }
+    
+    public void telaCalcSal() {
+        telaCalcSal.setVisible(true);
     }
 }

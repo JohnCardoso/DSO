@@ -1,11 +1,11 @@
 package br.ufsc.ine5605.trabfinal.controllers;
 
-//import br.ufsc.ine5605.trabfinal.display.TelaCalculaSalario;
+import br.ufsc.ine5605.trabfinal.display.TelaCalculaSalario;
 import br.ufsc.ine5605.trabfinal.objects.Funcionario;
 import br.ufsc.ine5605.trabfinal.persistence.FuncDAO;
 
 public class ControladorCalculaSalario extends Controlador {
-  //  private TelaCalculaSalario telaCalcSal;
+    private TelaCalculaSalario telaCalcSal;
     private static ControladorCalculaSalario ctrlCalcular;
     private ControladorFuncionario ctrlFunc;
 
@@ -17,7 +17,7 @@ public class ControladorCalculaSalario extends Controlador {
 
     @Override
     public void inicia() {
-//        telaCalcSal.setVisible(true);
+    //   telaCalcSal.setVisible(true);
     }
 
     public static ControladorCalculaSalario getCtrlCalcular() {
@@ -31,11 +31,11 @@ public class ControladorCalculaSalario extends Controlador {
         ControladorCalculaSalario.ctrlCalcular = ctrlCalcular;
     }   
 
-  /*  public void recebendoDados(String matricula, String faltas, String horasExtras) throws Exception {
+    public void recebendoDados(String matricula, String faltas, String horasExtras) throws Exception {
         if(ctrlFunc.validaFuncionarioExiste(matricula)) {
             if(faltas.matches("[0-9]")) {
-                if(horasExtras.matches("^\\d+(\\.\\d\\d)*$")) {
-                  return "text";
+                if(horasExtras.matches("^\\d+\\.\\d\\d*$")) {
+                  
                 } else {
                     throw new IllegalArgumentException("Horas Extras obrigatóriamente devem ser dígitos");
                 }
@@ -45,7 +45,7 @@ public class ControladorCalculaSalario extends Controlador {
         } else {
             throw new IllegalArgumentException ("Funcionário Inexistente, digite outra Matrícula");
         }
-    } */
+    } 
     
     
 
