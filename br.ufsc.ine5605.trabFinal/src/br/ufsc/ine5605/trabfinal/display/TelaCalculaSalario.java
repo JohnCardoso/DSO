@@ -2,16 +2,12 @@
 
 import javax.swing.*;
 import java.awt.*;
-import br.ufsc.ine5605.trabfinal.controllers.ControladorCalculaSalario;
 import br.ufsc.ine5605.trabfinal.controllers.ControladorFuncionario;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class TelaCalculaSalario extends JFrame {
-    private ControladorFuncionario ctrlFuncionario;
-    private ControladorCalculaSalario ctrlCalcular;
+    private ControladorFuncionario ctrlFunc;
     private GerenciadorBotoesCalculo gerBotCalc;    
 
     private JLabel lbMatricula;
@@ -25,7 +21,7 @@ public class TelaCalculaSalario extends JFrame {
 
     public TelaCalculaSalario(ControladorFuncionario owner) {
         super("Informações");
-        this.ctrlFuncionario = owner;
+        this.ctrlFunc = owner;
         this.gerBotCalc = new GerenciadorBotoesCalculo();
 
         init();
@@ -96,17 +92,15 @@ public class TelaCalculaSalario extends JFrame {
         public void actionPerformed(ActionEvent e) {
             if (e.getActionCommand().equals("calculando")) {
                  try {
-                    ctrlFuncionario.recuperaDados(tfMatricula.getText(), tfFaltas.getText(), 
-                            tfHorasExtras.getText().replace(",","."));
-                    JOptionPane.showMessageDialog(null, "PASSOU CARALHO");
-                  //  ctrlPrinc.getCtrlExibe().inicia();
-                } catch (NullPointerException | IllegalArgumentException ex) {
-                    JOptionPane.showMessageDialog(null, ex.getMessage());
-                } catch (Exception ex) {
-                    Logger.getLogger(TelaCalculaSalario.class.getName()).log(Level.SEVERE, null, ex.getMessage());
-                }      
+                    ctrlFunc.recuperaSalario(tfMatricula.getText());
+                    ctrlFunc.validaFaltas(tfFaltas.getText());
+                    ctrlFunc.validaHoras(tfHorasExtras.getText().replace(",", "."));
+                    ctrlFunc.getCtrlFuncionario().telaExibeSal();
+                } catch (Exception ex3) {
+                    JOptionPane.showMessageDialog(null, ex3.getMessage());
+                }
             }
-        }
-    } 
+        } 
+    }
 
 } 

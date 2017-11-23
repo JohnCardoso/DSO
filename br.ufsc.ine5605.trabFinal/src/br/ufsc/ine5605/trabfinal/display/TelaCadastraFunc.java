@@ -169,13 +169,10 @@ public class TelaCadastraFunc extends JFrame {
         @Override
         public void itemStateChanged(ItemEvent e) {
             if(cbVT.isSelected()) {
-            //    ctrlFuncionario.validandoVT(true);
             }
             if(cbInsalubridade.isSelected()) {
-              //  ctrlFuncionario.validandoInsalubridade(true);
             }
             if(cbPericulosidade.isSelected()) {
-              //  ctrlFuncionario.validandoPericulosidade(true);
             }
         }
         
