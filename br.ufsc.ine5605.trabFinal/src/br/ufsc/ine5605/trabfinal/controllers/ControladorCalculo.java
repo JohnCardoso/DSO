@@ -11,7 +11,7 @@ public class ControladorCalculo extends Controlador {
     
     public ControladorCalculo() {
         super();
-        telaExibeSal = new TelaExibeSalario(this);
+     //   telaExibeSal = new TelaExibeSalario(this);
 
     }
 
