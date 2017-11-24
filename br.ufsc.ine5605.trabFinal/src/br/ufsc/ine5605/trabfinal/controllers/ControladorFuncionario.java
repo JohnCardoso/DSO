@@ -16,7 +16,7 @@ public class ControladorFuncionario extends Controlador implements ICrud {
     private TelaExibeSalario telaExibeSal;
     private static ControladorFuncionario ctrlFuncionario;
     
-    public ControladorFuncionario() {
+    public ControladorFuncionario() throws IllegalArgumentException {
         super();
         telaCadFunc = new TelaCadastraFunc(this);
         telaListarFunc = new TelaListarFunc(this);
@@ -126,15 +126,18 @@ public class ControladorFuncionario extends Controlador implements ICrud {
         telaCalcSal.setVisible(true);
     }
     
-    public void telaExibeSal() {
+    public void telaExibeSal() throws Exception {
+        //String matricula = null;
+        //telaExibeSal.teste(String.valueOf(recuperaSalario(matricula)));
         telaExibeSal.setVisible(true);
+        
     }
     
-    public double recuperaSalario(String salario) throws Exception {
-        Funcionario func = buscarPelaMatricula(salario);
+    public double recuperaSalario(String matricula) throws Exception {
+        Funcionario func = buscarPelaMatricula(matricula);
         if (func != null) {          
             if (!FuncDAO.getFDAO().getList().isEmpty()) {
-                return Double.parseDouble(buscarPelaMatricula(salario).getSalario().replace(",","."));              
+                return Double.parseDouble(func.getSalario().replace(",","."));              
             } else {
                 throw new Exception("Não existem Funcionários cadastrados.");
             }       
@@ -168,7 +171,7 @@ public class ControladorFuncionario extends Controlador implements ICrud {
    
    public int bonificaPericulosidade(String func) {
        int acrescPeric = 0;
-       if(buscarPelaMatricula(func).isPericulosidade()) {
+       if(buscarPelaMatricula(func).isPericulosidade() && buscarPelaMatricula(func) != null) {
            acrescPeric = 1;
        }
        return acrescPeric;
@@ -186,31 +189,35 @@ public class ControladorFuncionario extends Controlador implements ICrud {
         }
    }
    
-    public String validaHoras (String horas) throws Exception {
+    public String validaHoras (String horas) throws IllegalArgumentException {
         if(horas != null) {
             if(horas.matches("^\\d+(\\.\\d*)*$")) {
                 return horas;
             } else {
-                throw new Exception("Horas Extras obrigatóriamente devem ser dígitos");
+                throw new IllegalArgumentException("Horas Extras obrigatóriamente devem ser dígitos");
             }
         } else {
-            throw new Exception ("Cédula nula");
+            throw new IllegalArgumentException ("Cédula nula");
         }
    }
 
-    public double calculaSalario(String faltas, String horasExtras, String salario, String acrescIns, String acrescPeric, String descVT, String inss, String descIrrf) throws Exception {
-        double calcSal = recuperaSalario(salario) + (((recuperaSalario(salario) / 220) * Double.parseDouble(validaHoras(horasExtras))) * 1.5) + 
-                    (((recuperaSalario(salario) / 220) * bonificaInsalubridade(acrescIns)) * 1.2) +
-                    (((recuperaSalario(salario) / 220) * bonificaPericulosidade(acrescPeric)) * 1.3) - 
-                    (((recuperaSalario(salario) / 220) * descontaVT(descVT)) * 0.06) - calculaINSS(inss) -
-                    validaDescIRRF(descIrrf) - (((recuperaSalario(salario)) / 30) * Double.parseDouble(validaFaltas(faltas)));
+    public double calculaSalario(String faltas, String horasExtras, String matricula) throws Exception {
+        
+        faltas = validaFaltas(faltas);
+        horasExtras = validaHoras(horasExtras);
+        double recSal = recuperaSalario(matricula);
+        double calcSal = recSal + (((recSal / 220) * Double.parseDouble(horasExtras)) * 1.5) + 
+                    (((recSal / 220) * bonificaInsalubridade(matricula)) * 1.2) +
+                    (((recSal / 220) * bonificaPericulosidade(matricula)) * 1.3) - 
+                    (((recSal / 220) * descontaVT(matricula)) * 0.06) - calculaINSS(matricula) -
+                    validaDescIRRF(matricula) - (((recSal) / 30) * Double.parseDouble(faltas));
                 return calcSal;                        
             
     } 
     
     
-    public double calculaINSS(String salBruto) throws Exception {
-        double valSal = recuperaSalario(salBruto);
+    public double calculaINSS(String matricula) throws Exception {
+        double valSal = recuperaSalario(matricula);
         double inss;
 	if(valSal >= 937 && valSal <= 1659.38) {
 		inss = valSal * 0.08;
@@ -250,6 +257,4 @@ public class ControladorFuncionario extends Controlador implements ICrud {
 	}
 	return descIrrf;
     }
-    
-   
 }
