@@ -7,8 +7,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class TelaCalculaSalario extends JFrame {
+    private TelaExibeSalario telExiSal;
     private ControladorFuncionario ctrlFunc;
-    private GerenciadorBotoesCalculo gerBotCalc;    
+    private GerenciadorBotoesCalculo gerBotCalc;   
 
     private JLabel lbMatricula;
     private JTextField tfMatricula;
@@ -95,7 +96,10 @@ public class TelaCalculaSalario extends JFrame {
                     ctrlFunc.recuperaSalario(tfMatricula.getText());
                     ctrlFunc.validaFaltas(tfFaltas.getText());
                     ctrlFunc.validaHoras(tfHorasExtras.getText().replace(",", "."));
-                    ctrlFunc.getCtrlFuncionario().telaExibeSal();
+                    ControladorFuncionario.getCtrlFuncionario().telaExibeSal();
+                    
+                    //ctrlFunc.calculaSalario(tfFaltas.getText(), tfHorasExtras.getText(), tfMatricula.getText());
+                    
                 } catch (Exception ex3) {
                     JOptionPane.showMessageDialog(null, ex3.getMessage());
                 }
