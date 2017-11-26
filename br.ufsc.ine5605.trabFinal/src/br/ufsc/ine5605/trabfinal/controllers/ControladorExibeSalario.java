@@ -6,7 +6,7 @@ import br.ufsc.ine5605.trabfinal.display.TelaExibeSalario;
     private TelaExibeSalario telaExibeSal;
     private static ControladorExibeSalario ctrlExibeSal;
     
-    public ControladorExibeSalario() {
+    public ControladorExibeSalario() throws Exception {
          super();
          telaExibeSal = new TelaExibeSalario(this);
     }
@@ -15,7 +15,7 @@ import br.ufsc.ine5605.trabfinal.display.TelaExibeSalario;
     public void inicia() {
         telaExibeSal.setVisible(true);
     }
-    public static ControladorExibeSalario getCtrlExibeSal() {
+    public static ControladorExibeSalario getCtrlExibeSal() throws Exception {
         if(ctrlExibeSal == null) {
             ctrlExibeSal = new ControladorExibeSalario();
         }
@@ -28,7 +28,6 @@ import br.ufsc.ine5605.trabfinal.display.TelaExibeSalario;
     
     public void telaExibeSal() throws Exception {
         telaExibeSal.setVisible(true);
-        telaExibeSal.exibeResultado();
         
     }
     

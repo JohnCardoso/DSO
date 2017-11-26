@@ -2,10 +2,10 @@ package br.ufsc.ine5605.trabfinal.controllers;
 
 import br.ufsc.ine5605.trabfinal.display.TelaCadastraFunc;
 import br.ufsc.ine5605.trabfinal.display.TelaCalculaSalario;
-import br.ufsc.ine5605.trabfinal.display.TelaExibeSalario;
 import br.ufsc.ine5605.trabfinal.display.TelaListarFunc;
 import br.ufsc.ine5605.trabfinal.interfaces.ICrud;
 import br.ufsc.ine5605.trabfinal.objects.Funcionario;
+import br.ufsc.ine5605.trabfinal.objects.Salario;
 import br.ufsc.ine5605.trabfinal.persistence.FuncDAO;
 import java.util.ArrayList;
 
@@ -13,7 +13,6 @@ public class ControladorFuncionario extends Controlador implements ICrud {
     private TelaCadastraFunc telaCadFunc;
     private TelaListarFunc telaListarFunc;
     private TelaCalculaSalario telaCalcSal;
-   // private TelaExibeSalario telaExibeSal;
     
     private static ControladorFuncionario ctrlFuncionario;
     
@@ -22,7 +21,6 @@ public class ControladorFuncionario extends Controlador implements ICrud {
         telaCadFunc = new TelaCadastraFunc(this);
         telaListarFunc = new TelaListarFunc(this);
         telaCalcSal = new TelaCalculaSalario(this);
-       // telaExibeSal = new TelaExibeSalario(this);
 	
     }
 
@@ -49,6 +47,13 @@ public class ControladorFuncionario extends Controlador implements ICrud {
         cadastrar(func);
     }
     
+   /* public void registrandoSalario (String matricula, String falta, String horasExtras) throws Exception {
+        Salario sal = new Salario (String.valueOf(recuperaSalario(matricula)), validaFaltas(falta), validaHoras(horasExtras));
+        calculaSalario(sal);
+        
+    } */
+    
+    
     public ArrayList<Funcionario> listarFuncionarios() {
         return new ArrayList<Funcionario>(FuncDAO.getFDAO().getList());
     }
@@ -56,7 +61,7 @@ public class ControladorFuncionario extends Controlador implements ICrud {
     public boolean validaFuncionarioExiste(String numeroMat) {
         if (!FuncDAO.getFDAO().getList().isEmpty()) {
             for (int i = 0; i < listarFuncionarios().size(); i++) {
-                if (listarFuncionarios().get(i).getMatricula().equalsIgnoreCase(numeroMat)) {
+                if (listarFuncionarios().get(i).getMatricula().equals(numeroMat)) {
                     return true;
                 }
             }
@@ -113,10 +118,9 @@ public class ControladorFuncionario extends Controlador implements ICrud {
                     return f;
                 }
             }
-        }
-        return null;
+        }            
+        throw new IllegalArgumentException("Matricula inválida");
     }
-    
     
     
     public void telaListarFunc() {
@@ -127,17 +131,13 @@ public class ControladorFuncionario extends Controlador implements ICrud {
         telaCalcSal.setVisible(true);
     }
     
-   //public void telaExibeSal() throws Exception {
-     //   telaExibeSal.setVisible(true);
-       // telaExibeSal.exibeResultado();
-        
-    //}
-    
     public double recuperaSalario(String matricula) throws Exception {
+        
         Funcionario func = buscarPelaMatricula(matricula);
         if (func != null) {          
             if (!FuncDAO.getFDAO().getList().isEmpty()) {
-                return Double.parseDouble(func.getSalario().replace(",","."));              
+                return Double.parseDouble(func.getSalario().replace(",","."));
+                
             } else {
                 throw new Exception("Não existem Funcionários cadastrados.");
             }       
@@ -179,7 +179,7 @@ public class ControladorFuncionario extends Controlador implements ICrud {
    
     public String validaFaltas(String faltas) throws IllegalArgumentException {
         if(faltas != null) {
-            if(faltas.matches("\\d*")) {
+            if(faltas.matches("[0-9]{1,2}")) {
                 return faltas;
             } else {
                 throw new IllegalArgumentException ("Número de faltas devem ser dígitos \nCaso não possua faltas digite 0");
@@ -194,30 +194,28 @@ public class ControladorFuncionario extends Controlador implements ICrud {
             if(horas.matches("^\\d+(\\.\\d*)*$")) {
                 return horas;
             } else {
-                throw new IllegalArgumentException("Horas Extras obrigatóriamente devem ser dígitos");
+                throw new IllegalArgumentException("Horas Extras obrigatoriamente devem ser dígitos");
             }
         } else {
             throw new IllegalArgumentException ("Cédula nula");
         }
    }
 
-    public double calculaSalario(String faltas, String horasExtras, String matricula) throws Exception {
+    public double calculaSalario(String matricula, String faltas, String horasExtras) throws Exception {
         
-        faltas = validaFaltas(faltas);
-        horasExtras = validaHoras(horasExtras);
-        double recSal = recuperaSalario(matricula);
-        double calcSal = recSal + (((recSal / 220) * Double.parseDouble(horasExtras)) * 1.5) + 
-                    (((recSal / 220) * bonificaInsalubridade(matricula)) * 1.2) +
-                    (((recSal / 220) * bonificaPericulosidade(matricula)) * 1.3) - 
-                    (((recSal / 220) * descontaVT(matricula)) * 0.06) - calculaINSS(matricula) -
-                    validaDescIRRF(matricula) - (((recSal) / 30) * Double.parseDouble(faltas));
-                return calcSal;                        
-            
+        
+        final double salBruto = this.recuperaSalario(matricula);
+        double falta = Double.parseDouble(this.validaFaltas(faltas));
+        double horas = Double.parseDouble(this.validaHoras(horasExtras));
+        double calcSal = salBruto + (((salBruto/220) * horas) * 1.5) - (((salBruto) / 30) * falta) + (((salBruto / 220) * this.bonificaInsalubridade(matricula)) * 1.2)
+                    + (((salBruto / 220) * this.bonificaPericulosidade(matricula)) * 1.3) - (((salBruto / 220) * this.descontaVT(matricula)) * 0.06) -
+                    this.calculaINSS(matricula) - this.validaDescIRRF(matricula);
+        return calcSal;
     } 
     
     
-    public double calculaINSS(String matricula) throws Exception {
-        double valSal = recuperaSalario(matricula);
+    public double calculaINSS(final String matricula) throws Exception {
+        final double valSal = this.recuperaSalario(matricula);
         double inss;
 	if(valSal >= 937 && valSal <= 1659.38) {
 		inss = valSal * 0.08;
@@ -231,19 +229,20 @@ public class ControladorFuncionario extends Controlador implements ICrud {
 	return inss;
     }
     
-    public double calculaIRRF(String matricula) throws Exception {
+    public double calculaIRRF(final String matricula) throws Exception {
+        
 	double irrf;
-	double valSal = recuperaSalario(matricula);
+	final double valSal = this.recuperaSalario(matricula);
 	if (valSal >= 937 && valSal <= 1787.77) {
 		irrf = 0;
 	} else if (valSal >= 1787.78 && valSal <= 2678.29) {
-		irrf = 134.08 - descontoDependentes(buscarPelaMatricula(matricula).getDependente());
+		irrf = 134.08 - this.descontoDependentes(buscarPelaMatricula(matricula).getMatricula());
 	} else if (valSal >= 2679.30 && valSal <= 3572.43) {
-		irrf = 335.03 - descontoDependentes(buscarPelaMatricula(matricula).getDependente());
+		irrf = 335.03 - this.descontoDependentes(buscarPelaMatricula(matricula).getMatricula());
 	} else if ( valSal >= 3572.44 && valSal <= 4463.81) {
-		irrf = 602.96 - descontoDependentes(buscarPelaMatricula(matricula).getDependente());
+		irrf = 602.96 - this.descontoDependentes(buscarPelaMatricula(matricula).getMatricula());
 	} else {
-		irrf = 826.15 - descontoDependentes(buscarPelaMatricula(matricula).getDependente());
+		irrf = 826.15 - this.descontoDependentes(buscarPelaMatricula(matricula).getMatricula());
 	}
 	return irrf;
     }
