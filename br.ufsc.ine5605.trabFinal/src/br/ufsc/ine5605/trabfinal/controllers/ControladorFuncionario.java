@@ -13,7 +13,8 @@ public class ControladorFuncionario extends Controlador implements ICrud {
     private TelaCadastraFunc telaCadFunc;
     private TelaListarFunc telaListarFunc;
     private TelaCalculaSalario telaCalcSal;
-    private TelaExibeSalario telaExibeSal;
+   // private TelaExibeSalario telaExibeSal;
+    
     private static ControladorFuncionario ctrlFuncionario;
     
     public ControladorFuncionario() throws IllegalArgumentException {
@@ -21,7 +22,7 @@ public class ControladorFuncionario extends Controlador implements ICrud {
         telaCadFunc = new TelaCadastraFunc(this);
         telaListarFunc = new TelaListarFunc(this);
         telaCalcSal = new TelaCalculaSalario(this);
-        telaExibeSal = new TelaExibeSalario(this);
+       // telaExibeSal = new TelaExibeSalario(this);
 	
     }
 
@@ -89,7 +90,7 @@ public class ControladorFuncionario extends Controlador implements ICrud {
                                 telaListarFunc.atualDados();
                             }
                         } else {
-                            throw new IllegalArgumentException(" Nº de dependentes inválido,\ncaso não possua dependente coloque 0");
+                            throw new IllegalArgumentException("Nº de dependentes inválido,\ncaso não possua dependente coloque 0");
                         }
                     } else {
                          throw new IllegalArgumentException("Salário inferior ao mínimo previsto: R$ 937,00");
@@ -126,12 +127,11 @@ public class ControladorFuncionario extends Controlador implements ICrud {
         telaCalcSal.setVisible(true);
     }
     
-    public void telaExibeSal() throws Exception {
-        //String matricula = null;
-        //telaExibeSal.teste(String.valueOf(recuperaSalario(matricula)));
-        telaExibeSal.setVisible(true);
+   //public void telaExibeSal() throws Exception {
+     //   telaExibeSal.setVisible(true);
+       // telaExibeSal.exibeResultado();
         
-    }
+    //}
     
     public double recuperaSalario(String matricula) throws Exception {
         Funcionario func = buscarPelaMatricula(matricula);
@@ -146,32 +146,32 @@ public class ControladorFuncionario extends Controlador implements ICrud {
         }
     }
     
-    public double descontoDependentes(String func) {
-        return (Double.parseDouble(buscarPelaMatricula(func).getDependente()) * 189.59);
+    public double descontoDependentes(String matricula) {
+        return (Double.parseDouble(buscarPelaMatricula(matricula).getDependente()) * 189.59);
     }
     
     
     
-    public int descontaVT(String func) {
+    public int descontaVT(String matricula) {
         int descVT = 0;
-        if(buscarPelaMatricula(func).isVt()) {
+        if(buscarPelaMatricula(matricula).isVt()) {
             descVT = 1;
         }
         return descVT;
     }
     
-   public int bonificaInsalubridade(String func) {
+   public int bonificaInsalubridade(String matricula) {
        int acrescIns = 0;
-       if(buscarPelaMatricula(func).isInsalubridade()) {
+       if(buscarPelaMatricula(matricula).isInsalubridade()) {
            acrescIns = 1;
        } else {
        }
        return acrescIns;
    }
    
-   public int bonificaPericulosidade(String func) {
+   public int bonificaPericulosidade(String matricula) {
        int acrescPeric = 0;
-       if(buscarPelaMatricula(func).isPericulosidade() && buscarPelaMatricula(func) != null) {
+       if(buscarPelaMatricula(matricula).isPericulosidade()) {
            acrescPeric = 1;
        }
        return acrescPeric;
@@ -179,7 +179,7 @@ public class ControladorFuncionario extends Controlador implements ICrud {
    
     public String validaFaltas(String faltas) throws IllegalArgumentException {
         if(faltas != null) {
-            if(faltas.matches("[0-9]")) {
+            if(faltas.matches("\\d*")) {
                 return faltas;
             } else {
                 throw new IllegalArgumentException ("Número de faltas devem ser dígitos \nCaso não possua faltas digite 0");
@@ -231,19 +231,19 @@ public class ControladorFuncionario extends Controlador implements ICrud {
 	return inss;
     }
     
-    public double calculaIRRF(String func) throws Exception {
+    public double calculaIRRF(String matricula) throws Exception {
 	double irrf;
-	double valSal = recuperaSalario(func);
+	double valSal = recuperaSalario(matricula);
 	if (valSal >= 937 && valSal <= 1787.77) {
 		irrf = 0;
 	} else if (valSal >= 1787.78 && valSal <= 2678.29) {
-		irrf = 134.08 - descontoDependentes(buscarPelaMatricula(func).getDependente());
+		irrf = 134.08 - descontoDependentes(buscarPelaMatricula(matricula).getDependente());
 	} else if (valSal >= 2679.30 && valSal <= 3572.43) {
-		irrf = 335.03 - descontoDependentes(buscarPelaMatricula(func).getDependente());
+		irrf = 335.03 - descontoDependentes(buscarPelaMatricula(matricula).getDependente());
 	} else if ( valSal >= 3572.44 && valSal <= 4463.81) {
-		irrf = 602.96 - descontoDependentes(buscarPelaMatricula(func).getDependente());
+		irrf = 602.96 - descontoDependentes(buscarPelaMatricula(matricula).getDependente());
 	} else {
-		irrf = 826.15 - descontoDependentes(buscarPelaMatricula(func).getDependente());
+		irrf = 826.15 - descontoDependentes(buscarPelaMatricula(matricula).getDependente());
 	}
 	return irrf;
     }

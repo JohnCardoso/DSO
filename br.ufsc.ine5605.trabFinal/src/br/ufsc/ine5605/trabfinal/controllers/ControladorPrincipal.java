@@ -35,4 +35,8 @@ public class ControladorPrincipal extends Controlador {
         return ControladorFuncionario.getCtrlFuncionario();
     }
     
+    public ControladorExibeSalario getCtrlExibeSal() {
+        return ControladorExibeSalario.getCtrlExibeSal();
+    }
+    
 }
