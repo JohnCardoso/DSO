@@ -99,8 +99,7 @@ public class TelaCalculaSalario extends JFrame {
                     ctrlFunc.validaFaltas(tfFaltas.getText());
                     ctrlFunc.validaHoras(tfHorasExtras.getText().replace(",", "."));
                     ControladorExibeSalario.getCtrlExibeSal().inicia();
-                    //ctrlFunc.telaExibeSal();
-                    //ctrlFunc.calculaSalario(tfFaltas.getText(), tfHorasExtras.getText(), tfMatricula.getText());
+                    //telExiSal.teste(tfMatricula.getText(), tfFaltas.getText(), tfHorasExtras.getText());
                     
                 } catch (Exception ex3) {
                     JOptionPane.showMessageDialog(null, ex3.getMessage());
