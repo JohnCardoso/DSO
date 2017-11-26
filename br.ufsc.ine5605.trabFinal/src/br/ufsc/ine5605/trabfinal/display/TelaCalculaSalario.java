@@ -1,5 +1,6 @@
  package br.ufsc.ine5605.trabfinal.display;
 
+import br.ufsc.ine5605.trabfinal.controllers.ControladorExibeSalario;
 import javax.swing.*;
 import java.awt.*;
 import br.ufsc.ine5605.trabfinal.controllers.ControladorFuncionario;
@@ -9,7 +10,8 @@ import java.awt.event.ActionListener;
 public class TelaCalculaSalario extends JFrame {
     private TelaExibeSalario telExiSal;
     private ControladorFuncionario ctrlFunc;
-    private GerenciadorBotoesCalculo gerBotCalc;   
+    private GerenciadorBotoesCalculo gerBotCalc;
+    private ControladorExibeSalario ctrlExibeSal;
 
     private JLabel lbMatricula;
     private JTextField tfMatricula;
@@ -96,13 +98,15 @@ public class TelaCalculaSalario extends JFrame {
                     ctrlFunc.recuperaSalario(tfMatricula.getText());
                     ctrlFunc.validaFaltas(tfFaltas.getText());
                     ctrlFunc.validaHoras(tfHorasExtras.getText().replace(",", "."));
-                    ControladorFuncionario.getCtrlFuncionario().telaExibeSal();
-                    
+                    ControladorExibeSalario.getCtrlExibeSal().inicia();
+                    //ctrlFunc.telaExibeSal();
                     //ctrlFunc.calculaSalario(tfFaltas.getText(), tfHorasExtras.getText(), tfMatricula.getText());
                     
                 } catch (Exception ex3) {
                     JOptionPane.showMessageDialog(null, ex3.getMessage());
                 }
+                 
+                 
             }
         } 
     }
