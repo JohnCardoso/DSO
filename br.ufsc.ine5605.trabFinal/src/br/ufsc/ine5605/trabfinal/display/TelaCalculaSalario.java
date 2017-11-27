@@ -82,7 +82,7 @@ public class TelaCalculaSalario extends JFrame {
         container.add(bCalcular, constraints);
         bCalcular.setActionCommand("calculando");
         bCalcular.addActionListener(gerBotCalc);
-
+        
         setSize(400, 300);        
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
@@ -95,19 +95,16 @@ public class TelaCalculaSalario extends JFrame {
         public void actionPerformed(ActionEvent e) {
             if (e.getActionCommand().equals("calculando")) {
                  try {
+                	 
                     ctrlFunc.recuperaSalario(tfMatricula.getText());
                     ctrlFunc.validaFaltas(tfFaltas.getText());
                     ctrlFunc.validaHoras(tfHorasExtras.getText().replace(",", "."));
-                    ControladorExibeSalario.getCtrlExibeSal().inicia();
-                    //telExiSal.teste(tfMatricula.getText(), tfFaltas.getText(), tfHorasExtras.getText());
+                    ControladorExibeSalario.getCtrlExibeSal().inicia(tfMatricula.getText(), tfFaltas.getText(), tfHorasExtras.getText().replace(",", "."));
                     
                 } catch (Exception ex3) {
                     JOptionPane.showMessageDialog(null, ex3.getMessage());
                 }
-                 
-                 
             }
         } 
     }
-
 } 
