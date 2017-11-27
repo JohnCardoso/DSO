@@ -5,8 +5,8 @@ import br.ufsc.ine5605.trabfinal.display.TelaCalculaSalario;
 import br.ufsc.ine5605.trabfinal.display.TelaListarFunc;
 import br.ufsc.ine5605.trabfinal.interfaces.ICrud;
 import br.ufsc.ine5605.trabfinal.objects.Funcionario;
-import br.ufsc.ine5605.trabfinal.objects.Salario;
 import br.ufsc.ine5605.trabfinal.persistence.FuncDAO;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class ControladorFuncionario extends Controlador implements ICrud {
@@ -46,13 +46,6 @@ public class ControladorFuncionario extends Controlador implements ICrud {
         Funcionario func = new Funcionario(nome, matricula, salario, dependentes, vt, insalubridade, periculosidade);
         cadastrar(func);
     }
-    
-   /* public void registrandoSalario (String matricula, String falta, String horasExtras) throws Exception {
-        Salario sal = new Salario (String.valueOf(recuperaSalario(matricula)), validaFaltas(falta), validaHoras(horasExtras));
-        calculaSalario(sal);
-        
-    } */
-    
     
     public ArrayList<Funcionario> listarFuncionarios() {
         return new ArrayList<Funcionario>(FuncDAO.getFDAO().getList());
@@ -118,8 +111,9 @@ public class ControladorFuncionario extends Controlador implements ICrud {
                     return f;
                 }
             }
-        }            
+        }
         throw new IllegalArgumentException("Matricula inválida");
+        
     }
     
     
@@ -201,16 +195,16 @@ public class ControladorFuncionario extends Controlador implements ICrud {
         }
    }
 
-    public double calculaSalario(String matricula, String faltas, String horasExtras) throws Exception {
-        
+    public String calculaSalario(String matricula, String faltas, String horasExtras) throws Exception {
         
         final double salBruto = this.recuperaSalario(matricula);
+        
         double falta = Double.parseDouble(this.validaFaltas(faltas));
         double horas = Double.parseDouble(this.validaHoras(horasExtras));
         double calcSal = salBruto + (((salBruto/220) * horas) * 1.5) - (((salBruto) / 30) * falta) + (((salBruto / 220) * this.bonificaInsalubridade(matricula)) * 1.2)
                     + (((salBruto / 220) * this.bonificaPericulosidade(matricula)) * 1.3) - (((salBruto / 220) * this.descontaVT(matricula)) * 0.06) -
                     this.calculaINSS(matricula) - this.validaDescIRRF(matricula);
-        return calcSal;
+        return new DecimalFormat("#.00").format(calcSal);
     } 
     
     
@@ -227,6 +221,18 @@ public class ControladorFuncionario extends Controlador implements ICrud {
 		inss = 608.45;
 	}
 	return inss;
+    }
+    
+    public String salvaMatricula(String matricula) {
+        return matricula;
+    }
+    
+    public String salvaFalta(String falta) {
+        return falta;
+    }
+    
+    public String salvaHoras(String hora) {
+        return hora;
     }
     
     public double calculaIRRF(final String matricula) throws Exception {
