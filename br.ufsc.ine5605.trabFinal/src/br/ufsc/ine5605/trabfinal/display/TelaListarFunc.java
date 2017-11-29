@@ -56,8 +56,26 @@ public class TelaListarFunc extends JFrame {
             String salario = f.getSalario();
             String dependente = f.getDependente();
             String vt = String.valueOf(f.isVt());
+            if (f.isVt()) {
+                vt = "Sim";
+            } else {
+                vt = "Não";
+            }
+
             String insalubridade = String.valueOf(f.isInsalubridade());
+            if (f.isInsalubridade()) {
+                insalubridade = "Sim";
+            } else {
+                insalubridade = "Não";
+            }
+
             String periculosidade = String.valueOf(f.isPericulosidade());
+            if (f.isPericulosidade()) {
+                periculosidade = "Sim";
+            } else {
+                periculosidade = "Não";
+            }
+
             
             Object[] row = { matricula, nome, salario, dependente, vt, insalubridade, periculosidade };
             tabelaMF.addRow(row);
