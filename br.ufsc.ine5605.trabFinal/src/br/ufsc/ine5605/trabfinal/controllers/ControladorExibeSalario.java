@@ -2,19 +2,20 @@ package br.ufsc.ine5605.trabfinal.controllers;
 
 import br.ufsc.ine5605.trabfinal.display.TelaExibeSalario;
 
- public class ControladorExibeSalario {
+public class ControladorExibeSalario {
     private TelaExibeSalario telaExibeSal;
     private static ControladorExibeSalario ctrlExibeSal;
     
     public ControladorExibeSalario() throws Exception {
          super();
-         
          telaExibeSal = new TelaExibeSalario(this);
+        
     }
     
-    public void inicia(String matricula, String faltas, String horasExtras) {
-        telaExibeSal.passaValores(matricula, faltas, horasExtras);
-        telaExibeSal.setVisible(true);
+    public void inicia(String matricula, String faltas, String horasExtras) throws Exception {
+    	TelaExibeSalario telaExibeSal1 = new TelaExibeSalario(this);
+    	telaExibeSal1.passaValores(matricula, faltas, horasExtras);
+        telaExibeSal1.setVisible(true);
         
 
     }

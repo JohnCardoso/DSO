@@ -204,6 +204,10 @@ public class ControladorFuncionario extends Controlador implements ICrud {
         double calcSal = salBruto + (((salBruto/220) * horas) * 1.5) - (((salBruto) / 30) * falta) + (((salBruto / 220) * this.bonificaInsalubridade(matricula)) * 1.2)
                     + (((salBruto / 220) * this.bonificaPericulosidade(matricula)) * 1.3) - (((salBruto / 220) * this.descontaVT(matricula)) * 0.06) -
                     this.calculaINSS(matricula) - this.validaDescIRRF(matricula);
+        if(calcSal < 0.00) {
+            calcSal = 00.00;
+            return new DecimalFormat("0.00").format(calcSal);
+        }
         return new DecimalFormat("#.00").format(calcSal);
     } 
     
